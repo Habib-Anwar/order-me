@@ -1,0 +1,18 @@
+{
+    "products": [
+      {
+        "code": "001",
+        "name": "Vintage shirt dress",
+        "description": "Our jacket dresses can effortlessly take you from day to night and can be worn in so many different ways. It is light weight and can be worn all year around.",
+        "image": "https://i.etsystatic.com/17725572/r/il/9cdf09/4355860267/il_794xN.4355860267_8lxy.jpg"
+       
+      },
+      {
+        "code": "002",
+        "name": "Senhora Twisha Party",
+        "description": "Featuring This Gorgeous party wear Anarkali Suit from the Brand Senhora in Pure Butterfly Net paired with a Churidar or Trouser Salwar, and dupatta",
+        "image": "https://cdn.shopify.com/s/files/1/0549/6586/2483/products/khoobsurat-aanchal-embroidered-pakistani-lawn-dress-608798_360x.jpg?v=1640311084"
+      }
+    ]
+  }
+  

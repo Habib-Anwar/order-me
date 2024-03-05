@@ -1,5 +1,6 @@
 import React from 'react'
 import { Container } from '../Container/Container'
+import ProductDetails from '../../Home/Home/ProductDetails'
 
 export const Footer = () => {
   return (
