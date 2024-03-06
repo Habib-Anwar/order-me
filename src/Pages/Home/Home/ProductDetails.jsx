@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
-import productData from '../../../../public/product.json'
-import { InputBox } from '../../Shared/InputBox/InputBox';
+import productData from '../../../../public/product.json';
 
 const ProductDetails = () => {
   const [productCode, setProductCode] = useState('');

@@ -1,10 +1,14 @@
 import React from 'react'
 import { Container } from '../Container/Container'
 import ProductDetails from '../../Home/Home/ProductDetails'
+import YourFormComponent from '../Rough/YourFormComponent'
+import CombinedForm from '../Rough/CombinedForm'
 
 export const Footer = () => {
   return (
     <Container>
+     <CombinedForm></CombinedForm>
+     <YourFormComponent></YourFormComponent>
 <footer
    class="relative z-10 bg-white dark:bg-dark pt-20 pb-10 lg:pt-[120px] lg:pb-20"
    >
