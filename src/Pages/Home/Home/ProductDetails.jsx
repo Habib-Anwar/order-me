@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 import productData from '../../../../public/product.json';
+import { Link } from 'react-router-dom';
 
 const ProductDetails = () => {
   const [productCode, setProductCode] = useState('');
   const [productDetails, setProductDetails] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const handleInputChange = (e) => {
     const code = e.target.value;
@@ -20,6 +22,10 @@ const ProductDetails = () => {
     } else {
       setProductDetails(null);
     }
+  };
+  const openModalForAddProduct = (product) => {
+    setIsModalOpen(true);
+    setSelectedProduct(product);
   };
 
   const openModal = () => {
@@ -82,15 +88,24 @@ const ProductDetails = () => {
         </button>
       </div>
     )}
-
+     <div className="mb-10">
+        <button
+          type="button"
+          onClick={() => openModalForAddProduct(selectedProduct)}
+          className="w-full btn btn-info rounded-md bg-error px-5 py-3 text-base font-medium text-white transition hover:bg-opacity-90"
+        >
+          Add Product
+        </button>
+      </div>
+    <Link to="/order">
     <div className="mb-10">
       <input
         type="submit"
-        value="Sign In"
+        value="Place Order"
         className="w-full cursor-pointer rounded-md border border-primary bg-primary px-5 py-3 text-base font-medium text-white transition hover:bg-opacity-90"
        />
     </div>
-
+    </Link>
     <Modal
 isOpen={isModalOpen}
 onRequestClose={closeModal}
@@ -112,6 +127,21 @@ contentLabel="Product Details Modal"
   </div>
 )}
 </Modal>
+{/* <Modal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        contentLabel="Add Product Modal"
+      >
+        {selectedProduct && (
+          <div>
+            <h2>Product Details:</h2>
+            <p>Code: {selectedProduct.code}</p>
+            <p>Quantity: {selectedProduct.quantity}</p>
+            {/* Include other product details here */}
+            {/* <button onClick={closeModal}>Close</button>
+          </div>
+        )}
+      </Modal> */} 
   </form>
   );
 };
