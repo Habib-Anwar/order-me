@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
-import productData from '../../../../public/product.json';
+import productData from '../../../Json/product.json';
 import { Link } from 'react-router-dom';
 
 const ProductDetails = () => {
@@ -37,7 +37,13 @@ const ProductDetails = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Add logic to handle form submission if needed
+    const form = e.target;
+    const name = form.name.value;
+    const number = form.number.value;
+    const address = form.address.value;
+    const code = form.code.value;
+    const qunatity = form.quantity.value;
+    console.log(name, number, address, code, qunatity)
   };
 
   return (
@@ -68,6 +74,7 @@ const ProductDetails = () => {
           onChange={handleInputChange}
           placeholder="Enter Product Code"
           className='input input-bordered w-full max-w-xs'
+          name='code'
         />
       </label>
     </div>
@@ -90,7 +97,7 @@ const ProductDetails = () => {
     )}
      <div className="mb-10">
         <button
-          type="button"
+           type="submit"
           onClick={() => openModalForAddProduct(selectedProduct)}
           className="w-full btn btn-info rounded-md bg-error px-5 py-3 text-base font-medium text-white transition hover:bg-opacity-90"
         >
@@ -100,7 +107,7 @@ const ProductDetails = () => {
     <Link to="/order">
     <div className="mb-10">
       <input
-        type="submit"
+       type="button"
         value="Place Order"
         className="w-full cursor-pointer rounded-md border border-primary bg-primary px-5 py-3 text-base font-medium text-white transition hover:bg-opacity-90"
        />
