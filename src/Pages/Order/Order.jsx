@@ -1,6 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { AuthContext } from '../../providers/AuthProvider';
 
 export const Order = () => {
+
+    const { user } = useContext(AuthContext);
+
   return (
     <div className=' lg:flex justify-evenly mb-12'>
       
@@ -134,10 +138,10 @@ export const Order = () => {
     <h2 className="card-title">Customer</h2>
     <div className="avatar flex gap-4">
   <div className="w-24 mask mask-squircle">
-    <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+    <img src={user?.photoURL} />
   </div>
   <div>
-  <h3 className=' font-semibold'>Name</h3>
+  <h3 className=' font-semibold'>{user?.displayName}</h3>
   </div>
   </div>
   <h3 className='font-semibold mt-4'>Shipping Address</h3>

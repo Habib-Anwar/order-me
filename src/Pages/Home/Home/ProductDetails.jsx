@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../../providers/AuthProvider';
 
 const ProductDetails = () => {
   const [productCode, setProductCode] = useState('');
@@ -8,6 +9,9 @@ const ProductDetails = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [orderProduct, setOrderProduct] = useState([]);
+
+
+  const {user} = useContext(AuthContext);
 
   useEffect(()=>{
      fetch('http://localhost:5000/product')
@@ -60,6 +64,7 @@ const ProductDetails = () => {
       address,
       code,
       quantity,
+      userEmail: user?.email
     };
 
     fetch(apiUrl, {
