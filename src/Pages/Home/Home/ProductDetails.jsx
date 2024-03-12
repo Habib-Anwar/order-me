@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
-import productData from '../../../Json/product.json';
 import { Link } from 'react-router-dom';
 
 const ProductDetails = () => {
@@ -8,12 +7,19 @@ const ProductDetails = () => {
   const [productDetails, setProductDetails] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [orderProduct, setOrderProduct] = useState([]);
+
+  useEffect(()=>{
+     fetch('http://localhost:5000/product')
+     .then(res =>res.json())
+     .then(data =>setOrderProduct(data))
+  }, [])
 
   const handleInputChange = (e) => {
     const code = e.target.value;
     setProductCode(code);
 
-    const foundProduct = productData.products.find(
+    const foundProduct = orderProduct[0].products.find(
       (product) => product.code === code
     );
 
@@ -42,8 +48,35 @@ const ProductDetails = () => {
     const number = form.number.value;
     const address = form.address.value;
     const code = form.code.value;
-    const qunatity = form.quantity.value;
-    console.log(name, number, address, code, qunatity)
+    const quantity = form.quantity.value;
+    console.log(name, number, address, code, quantity)
+
+
+    const apiUrl = 'http://localhost:5000/orders';
+
+    const orderData = {
+      name,
+      number,
+      address,
+      code,
+      quantity,
+    };
+
+    fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(orderData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // Handle the response from the server as needed
+        console.log('Order stored successfully:', data);
+      })
+      .catch((error) => {
+        console.error('Error storing order:', error);
+      });
   };
 
   return (
@@ -154,4 +187,3 @@ contentLabel="Product Details Modal"
 };
 
 export default ProductDetails;
-
