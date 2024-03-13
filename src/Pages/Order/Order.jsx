@@ -16,25 +16,26 @@ export const Order = () => {
       },[user])
 
   return (
-    <div className=' lg:flex justify-evenly mb-12'>
+    <div className='lg:flex justify-evenly mb-12'>
       
 <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-8">
-    <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+{orders.length > 0 ? (
+    <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 rtl">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-                <th scope="col" className="px-16 py-3">
+                <th key="header1" scope="col" className="px-16 py-3">
                     <span className="sr-only">Image</span>
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th key="header2"  scope="col" className="px-6 py-3">
                     Product
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th key="header3"  scope="col" className="px-6 py-3">
                     Qty
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th key="header4"  scope="col" className="px-6 py-3">
                     Price
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th key="header5"  scope="col" className="px-6 py-3">
                     Action
                 </th>
             </tr>
@@ -44,6 +45,9 @@ export const Order = () => {
                 order={order}
                 fetchOrders={fetchOrders}></OrderData>))}</tbody>
     </table>
+     ) : (
+      <p>No data available.</p>
+    )}
 </div>
 <div className="card w-96 bg-base-100 shadow-xl">
   <div className="card-body">

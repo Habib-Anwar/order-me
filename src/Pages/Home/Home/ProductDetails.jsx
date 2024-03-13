@@ -48,22 +48,25 @@ const ProductDetails = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const form = e.target;
-    const name = form.name.value;
+    const customerName = form.name.value;
     const number = form.number.value;
     const address = form.address.value;
     const code = form.code.value;
     const quantity = form.quantity.value;
-    console.log(name, number, address, code, quantity)
+    console.log(customerName, number, address, code, quantity)
 
 
     const apiUrl = 'http://localhost:5000/orders';
 
     const orderData = {
-      name,
+      customerName,
       number,
       address,
       code,
       quantity,
+      product:productDetails.name,
+      price:productDetails.price,
+      image:productDetails.image,
       userEmail: user?.email
     };
 
@@ -116,6 +119,17 @@ const ProductDetails = () => {
         />
       </label>
     </div>
+    {productDetails && (
+      <div className="mb-10">
+        <input
+          type='text'
+          value={productDetails.price}
+          className="input input-bordered w-full max-w-xs"
+          placeholder="Price"
+          name='price'
+        />
+      </div>
+    )}
 
     <div className="mb-10">
       <label>
@@ -165,6 +179,7 @@ contentLabel="Product Details Modal"
       <h2>Product Details:</h2>
       <p>Code: {productDetails.code}</p>
       <p className='text-lg font-bold'>{productDetails.name}</p>
+      <p className='text-md font-semibold'>Price: {productDetails.price} tk</p>
       <p>Description: {productDetails.description}</p>
       {/* Add other details as needed */}
       <button onClick={closeModal}>Close</button>
@@ -172,21 +187,6 @@ contentLabel="Product Details Modal"
   </div>
 )}
 </Modal>
-{/* <Modal
-        isOpen={isModalOpen}
-        onRequestClose={closeModal}
-        contentLabel="Add Product Modal"
-      >
-        {selectedProduct && (
-          <div>
-            <h2>Product Details:</h2>
-            <p>Code: {selectedProduct.code}</p>
-            <p>Quantity: {selectedProduct.quantity}</p>
-            {/* Include other product details here */}
-            {/* <button onClick={closeModal}>Close</button>
-          </div>
-        )}
-      </Modal> */} 
   </form>
   );
 };
