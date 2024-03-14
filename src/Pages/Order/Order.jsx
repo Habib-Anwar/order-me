@@ -3,6 +3,7 @@ import { AuthContext } from '../../providers/AuthProvider';
 import { getOrders } from '../../api/orders';
 import { OrderData } from './OrderData';
 import PriceCalculator from './PriceCalculator';
+import PaymentOptions from '../../components/PaymentOptions';
 
 export const Order = () => {
 
@@ -52,7 +53,7 @@ export const Order = () => {
 </div>
 <div className="card w-96 bg-base-100 shadow-xl h-1/2">
   <div className="card-body">
-    <h2 className="card-title">Customer</h2>
+    <h2 className="card-title">Hi!</h2>
     <div className="avatar flex gap-4">
   <div className="w-24 mask mask-squircle">
     <img src={user?.photoURL} />
@@ -70,8 +71,14 @@ export const Order = () => {
 <div className="card w-96 bg-base-100 shadow-xl ml-80 -mt-10">
   <div className="card-body">
    <PriceCalculator></PriceCalculator>
-    <div className="card-actions justify-end">
-      <button className="btn btn-primary">Buy Now</button>
+   <div>
+   <h3 className='font-semibold'>
+      Payment Option:
+    </h3>
+    <PaymentOptions></PaymentOptions>
+   </div>
+    <div className="card-actions justify-end mt-4">
+      <button className="btn btn-primary">Confirm Order</button>
     </div>
   </div>
 </div>
