@@ -25,3 +25,4 @@ export const getOrders = async email => {
     const data = await response.json();
     return data;
 };
+

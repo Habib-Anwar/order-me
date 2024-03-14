@@ -6,11 +6,12 @@ import {
 } from "react-router-dom";
 import { router } from './Routes/Routes.jsx';
 import { AuthProvider } from './providers/AuthProvider.jsx';
+import PriceCalculator from './Pages/Order/PriceCalculator.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <AuthProvider>
-  <RouterProvider router={router} />
+  <RouterProvider router={router}/>
   </AuthProvider>
   </React.StrictMode>,
 )
