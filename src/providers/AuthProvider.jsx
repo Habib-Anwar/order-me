@@ -7,6 +7,7 @@ export const AuthContext = createContext(null);
 const auth = getAuth(app);
 
 export const AuthProvider = ({children}) => {
+
     const [user, setUser] = useState(null);
     const  [loading, setLoading] = useState(true);
 
@@ -28,6 +29,8 @@ export const AuthProvider = ({children}) => {
       setLoading(true);
       return signInWithPopup(auth, googleProvider);
   }
+
+  
 
   const facebookSignIn = async () => {
     try {
@@ -59,14 +62,18 @@ export const AuthProvider = ({children}) => {
       return unsubscribe();
      }
     }, [])
+    const userEmail = user ? user.email : null;
 
     const authInfo = {
+      auth,
        user,
+       setUser,
        loading,
        createUser,
        signIn,
        googleSignIn,
        facebookSignIn,
+       userEmail,
        logOut
     }
   return (

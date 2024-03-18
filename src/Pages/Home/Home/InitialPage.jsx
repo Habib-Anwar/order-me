@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Glogo from '../../../assets/icons/Google.png'
 import Flogo from '../../../assets/icons/facebook.png'
@@ -6,16 +6,44 @@ import { AuthContext } from '../../../providers/AuthProvider'
 
 export const InitialPage = () => {
 
-    const {googleSignIn, facebookSignIn} = useContext(AuthContext)
+    const {googleSignIn, facebookSignIn, user, auth} = useContext(AuthContext)
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(true);
 
-    const handleGoogleSignIn = async () => {
-        // Call the googleSignIn function from AuthContext
-        await googleSignIn();
-    
-        // After successful sign-in, navigate to '/home'
-        navigate('/home');
-      };
+    const adminEmails = ['taufiqhassaan@gmail.com', 'admin2@example.com'];
+
+    const handleGoogleSignIn = async (e) => {
+      e.preventDefault();
+
+      setLoading(true); // Set loading state to true during sign-in process
+
+      try {
+          // Call the googleSignIn function to sign in with Google
+          await googleSignIn();
+
+          const updatedUser = await auth.currentUser;
+
+          // Check if the user is signed in and has an email
+          if (updatedUser && updatedUser.email) {
+              // If the user is an admin, navigate to '/admin'
+              if (adminEmails.includes(updatedUser.email)) {
+                  navigate('/admin');
+              } else {
+                  // If the user is not an admin, navigate to '/home' or show an error message
+                  navigate('/home');
+              }
+           } 
+           else {
+              // Handle case where user is not signed in or doesn't have an email
+              console.error('User is not signed in or does not have an email.');
+          }
+      } catch (error) {
+          console.error('Google sign-in failed:', error);
+          // Handle sign-in failure, show error message or retry sign-in
+      } finally {
+          setLoading(false); // Set loading state to false after sign-in process is complete
+      }
+  };
     const handleFacebookSignIn = async () => {
         // Call the googleSignIn function from AuthContext
         await facebookSignIn();
@@ -38,11 +66,11 @@ export const InitialPage = () => {
           <img src={Flogo} alt="" className='w-8 bg-primary' />
           <h3 className='text-lg'>Continue With Facebook</h3>
       </div>
-      <div onClick={handleGoogleSignIn} className="flex justify-center gap-12 w-96 ml-[570px] btn bg-pink-50"
+      <button onClick={handleGoogleSignIn} className="flex justify-center gap-12 w-96 ml-[570px] btn bg-pink-50"
 >
           <img src={Glogo} alt="" className='w-8' />
           <h3 className='text-lg'>Continue With Google</h3>
-      </div>
+      </button>
    </div>
   </div>
   )

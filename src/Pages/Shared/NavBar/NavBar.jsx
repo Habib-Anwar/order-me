@@ -1,8 +1,19 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { ListItem } from '../ListItem/ListItem';
+import { AuthContext } from '../../../providers/AuthProvider';
+import { useNavigate } from 'react-router-dom';
 
 export const NavBar = () => {
     const [open, setOpen] = useState(false);
+    const {logOut} = useContext(AuthContext);
+    const navigate = useNavigate();
+
+    const handleLogOut = () => {
+      logOut()
+        .then(() => { navigate('/') })
+        .catch(error => console.log(error));
+       
+    }
   return (
     <header className={`flex w-full items-center bg-white dark:bg-dark`}>
       <div className="container">
@@ -42,26 +53,19 @@ export const NavBar = () => {
                 } `}
               >
                 <ul className="block lg:flex">
-                  <ListItem NavLink="/#">Home</ListItem>
+                  <ListItem NavLink="/home">Home</ListItem>
                   <ListItem NavLink="/#">Payment</ListItem>
                   <ListItem NavLink="/#">About</ListItem>
                   <ListItem NavLink="/#">Blog</ListItem>
                 </ul>
               </nav>
             </div>
-            <div className="hidden justify-end pr-16 sm:flex lg:pr-0">
-              <a
-                href="/#"
-                className="px-7 py-3 text-base font-medium text-dark hover:text-primary dark:text-white"
-              >
-                Sign in
-              </a>
+            <div onClick={handleLogOut} className=" cursor-pointer hidden justify-end pr-16 sm:flex lg:pr-0">
 
               <a
-                href="/#"
                 className="rounded-md bg-primary px-7 py-3 text-base font-medium text-white hover:bg-primary/90"
               >
-                Sign Up
+                Log out
               </a>
             </div>
           </div>

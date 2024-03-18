@@ -51,7 +51,7 @@ export const Order = () => {
       <p>No data available.</p>
     )}
 </div>
-<div className="card w-96 bg-base-100 shadow-xl h-1/2">
+<div className="card w-96 bg-slate-300 shadow-xl h-1/2">
   <div className="card-body">
     <h2 className="card-title">Hi!</h2>
     <div className="avatar flex gap-4">
@@ -63,9 +63,17 @@ export const Order = () => {
   </div>
   </div>
   <h3 className='font-semibold mt-4'>Shipping Address</h3>
-    <p className='-mt-2'>If a dog chews shoes whose shoes does he choose?</p>
+  <p className="-mt-2">
+  {orders.map(order => (
+    <span key={order.id}>{order.address}</span>
+  ))}
+</p>
    <h3 className='font-semibold'>Mobile</h3>
-    <p className='-mt-2'>0171000000</p>
+   <p className="-mt-2">
+  {orders.map(order => (
+    <span key={order.id}>{order.number}</span>
+  ))}
+</p>
   </div>
 </div>
 <div className="card w-96 bg-base-100 shadow-xl ml-80 -mt-10">

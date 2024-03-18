@@ -88,6 +88,7 @@ const ProductDetails = () => {
   };
 
   return (
+    <>
     <form onSubmit={handleSubmit}>
     <div className="mb-10">
       <label>
@@ -156,6 +157,7 @@ const ProductDetails = () => {
           Add Product
         </button>
       </div>
+      </form>
     <Link to="/order">
     <div className="mb-10">
       <input
@@ -187,7 +189,7 @@ contentLabel="Product Details Modal"
   </div>
 )}
 </Modal>
-  </form>
+</>
   );
 };
 

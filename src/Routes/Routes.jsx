@@ -5,7 +5,8 @@ import { Main } from "../Layout/Main";
 import { Home } from "../Pages/Home/Home/Home";
 import { Order } from "../Pages/Order/Order";
 import { InitialPage } from "../Pages/Home/Home/InitialPage";
-import PriceCalculator from "../Pages/Order/PriceCalculator";
+import { AdminPage } from "../Pages/AdminPage/AdminPage";
+
 
 
 
@@ -28,6 +29,10 @@ import PriceCalculator from "../Pages/Order/PriceCalculator";
           path: "order",
           element: <Order></Order>
         },
+        {
+          path: "admin",
+          element: <AdminPage></AdminPage>
+        }
  
       ]
     },
