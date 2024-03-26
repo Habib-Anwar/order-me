@@ -55,21 +55,23 @@ const ProductDetails = () => {
     const quantity = form.quantity.value;
     console.log(customerName, number, address, code, quantity)
 
-
     const apiUrl = 'http://localhost:5000/orders';
 
+    const currentDate = new Date().toLocaleDateString('en-US', { timeZone: 'Asia/Dhaka' });
+    
     const orderData = {
       customerName,
       number,
       address,
       code,
       quantity,
-      product:productDetails.name,
-      price:productDetails.price,
-      image:productDetails.image,
-      userEmail: user?.email
+      product: productDetails.name,
+      price: productDetails.price,
+      image: productDetails.image,
+      userEmail: user?.email,
+      date: currentDate // Add the current date to the order data
     };
-
+    
     fetch(apiUrl, {
       method: 'POST',
       headers: {
@@ -84,7 +86,8 @@ const ProductDetails = () => {
       })
       .catch((error) => {
         console.error('Error storing order:', error);
-      });
+    });
+    
   };
 
   return (

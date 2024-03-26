@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../../providers/AuthProvider';
 import { getOrders } from '../../api/orders';
 
-const PriceCalculator = ({ updateData }) => {
+const PriceCalculator = () => {
     const [totalPrice, setTotalPrice] = useState(null);
     const [loading, setLoading] = useState(true);
     const { user } = useContext(AuthContext);
@@ -21,7 +21,6 @@ const PriceCalculator = ({ updateData }) => {
 
                 console.log("Total price calculated:", total); 
                 setTotalPrice(total);
-                updateData(total); // Update the priceCalculatorData in the parent component
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching orders:', error);
@@ -34,7 +33,7 @@ const PriceCalculator = ({ updateData }) => {
         } else {
             setLoading(false);
         }
-    }, [user, updateData]);
+    }, [user]);
 
     return (
         <div>

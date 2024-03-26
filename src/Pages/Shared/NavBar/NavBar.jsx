@@ -54,7 +54,7 @@ export const NavBar = () => {
               >
                 <ul className="block lg:flex">
                   <ListItem NavLink="/home">Home</ListItem>
-                  <ListItem NavLink="/#">Payment</ListItem>
+                  <ListItem NavLink="/order">Payment</ListItem>
                   <ListItem NavLink="/#">About</ListItem>
                   <ListItem NavLink="/#">Blog</ListItem>
                 </ul>

@@ -1,66 +1,28 @@
 import React, { useState } from 'react';
 
-const PaymentOptions = ({ updateOption, updateDetails }) => {
+const PaymentOptions = () => {
     const [paymentMethod, setPaymentMethod] = useState('');
     const [paymentDetails, setPaymentDetails] = useState('');
 
     const handlePaymentChange = (event) => {
-        const selectedMethod = event.target.value;
-        setPaymentMethod(selectedMethod);
+        setPaymentMethod(event.target.value);
         // Reset payment details when payment method changes
         setPaymentDetails('');
-
-        // Call the updateOption function passed as props to update payment option in parent component
-        updateOption(selectedMethod);
     };
 
     const handlePaymentDetailsChange = (event) => {
-        const details = event.target.value;
-        setPaymentDetails(details);
-
-        // Call the updateDetails function passed as props to update payment details in parent component
-        updateDetails(details);
+        setPaymentDetails(event.target.value);
     };
-    // const handlePaymentSubmit = async (event) => {
-    //     event.preventDefault();
-    
-    //     try {
-    //         const payload = {
-    //             // Include payment method and details
-    //             paymentMethod: paymentMethod,
-    //             paymentDetails: paymentDetails,
-    //         };
-    
-    //         const response = await fetch('http://localhost:5000/orders', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify(payload),
-    //         });
-    
-    //         if (response.ok) {
-    //             console.log('Order and payment options saved successfully');
-    //             // Optionally, you can perform further actions upon successful submission
-    //         } else {
-    //             console.error('Failed to save order and payment options:', response.statusText);
-    //             // Handle the error case accordingly
-    //         }
-    //     } catch (error) {
-    //         console.error('Error saving order and payment options:', error);
-    //         // Handle any network or other errors
-    //     }
-    // };
-    
-    
 
     const handlePaymentSubmit = (event) => {
         event.preventDefault();
 
-        // This part can be handled in the parent component based on the selected payment method and details
+        // Handle payment submission based on payment method and details
         if (paymentMethod === 'cardPayment') {
+            // Implement card payment method
             console.log('Processing card payment with details:', paymentDetails);
         } else if (paymentMethod === 'bKashNagadPayment') {
+            // Implement mobile banking payment method
             console.log('Processing mobile banking payment with details:', paymentDetails);
         }
     };
@@ -76,7 +38,7 @@ const PaymentOptions = ({ updateOption, updateDetails }) => {
                     checked={paymentMethod === 'cashOnDelivery'}
                     onChange={handlePaymentChange}
                 />
-                <label htmlFor="cash On Delivery">Cash on Delivery</label>
+                <label htmlFor="cashOnDelivery">Cash on Delivery</label>
             </div>
             <div>
                 <input
@@ -87,7 +49,7 @@ const PaymentOptions = ({ updateOption, updateDetails }) => {
                     checked={paymentMethod === 'onlinePayment'}
                     onChange={handlePaymentChange}
                 />
-                <label htmlFor="online Payment">Online Payment</label>
+                <label htmlFor="onlinePayment">Online Payment</label>
                 {paymentMethod === 'onlinePayment' && (
                     <div>
                         <input

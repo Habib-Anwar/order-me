@@ -9,13 +9,60 @@ export const Order = () => {
 
     const { user } = useContext(AuthContext);
 
-    const [orders, setOrders] = useState([])
+    const [orders, setOrders] = useState([]);
+    const [paymentOption, setPaymentOption] = useState('');
+    const [priceCalculatorData, setPriceCalculatorData] = useState({/* initial data */});
     const fetchOrders = () =>{
         getOrders(user?.email).then(data =>{ setOrders(data)})
     }
     useEffect(() => {
         fetchOrders();
       },[user])
+
+const handleOrderConfirm = async () => {
+  try {
+    const orderData = {
+      paymentOption,
+      priceCalculatorData,
+      // Any other relevant data you need for the order
+    };
+
+    // Send a POST request to your backend endpoint
+    const response = await fetch('http://localhost:5000/orders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(orderData),
+    });
+
+    if (response.ok) {
+      const responseData = await response.json();
+      console.log('Order stored successfully:', responseData.result);
+      // Optionally, you can perform further actions upon successful order submission
+    } else {
+      console.error('Failed to store order:', response.statusText);
+      // Handle the error case accordingly
+    }
+  } catch (error) {
+    console.error('Error storing order:', error);
+    // Handle any unexpected errors
+  }
+};
+    
+    
+    
+    
+    
+
+  
+      const ordersByEmailAddress = {};
+orders.forEach(order => {
+  if (!ordersByEmailAddress[order.email]) {
+    ordersByEmailAddress[order.email] = [];
+  }
+  ordersByEmailAddress[order.email].push(order);
+});
 
   return (
     <div className='lg:grid grid-cols-2 gap-12 mb-12'>
@@ -62,36 +109,73 @@ export const Order = () => {
   <h3 className=' font-semibold'>{user?.displayName}</h3>
   </div>
   </div>
-  <h3 className='font-semibold mt-4'>Shipping Address</h3>
-  <p className="-mt-2">
-  {orders.map(order => (
-    <span key={order.id}>{order.address}</span>
-  ))}
-</p>
-   <h3 className='font-semibold'>Mobile</h3>
-   <p className="-mt-2">
-  {orders.map(order => (
-    <span key={order.id}>{order.number}</span>
-  ))}
-</p>
+  {Object.keys(ordersByEmailAddress).map(email => (
+      <div key={email}>
+        <h3 className='font-semibold mt-4'>Shipping Address</h3>
+        {ordersByEmailAddress[email].map(order => (
+          <p key={order.id} className="-mt-2">
+            <span>{order.address}</span>
+          </p>
+        ))}
+        <h3 className='font-semibold'>Mobile</h3>
+        {ordersByEmailAddress[email].map(order => (
+          <p key={order.id} className="-mt-2">
+            <span>{order.number}</span>
+          </p>
+        ))}
+      </div>
+    ))}
   </div>
 </div>
 <div className="card w-96 bg-base-100 shadow-xl ml-80 -mt-10">
   <div className="card-body">
-   <PriceCalculator></PriceCalculator>
+   <PriceCalculator updateData={setPriceCalculatorData}></PriceCalculator>
    <div>
    <h3 className='font-semibold'>
       Payment Option:
     </h3>
-    <PaymentOptions></PaymentOptions>
+    <PaymentOptions updateOption={setPaymentOption}></PaymentOptions>
    </div>
     <div className="card-actions justify-end mt-4">
-      <button className="btn btn-primary">Confirm Order</button>
+      <button onClick={handleOrderConfirm} className="btn btn-primary">Confirm Order</button>
     </div>
   </div>
 </div>
-
-
     </div>
   )
 }
+
+
+
+// const handleOrderConfirm = async () => {
+//   try {
+//       // Ensure totalPrice, paymentMethod, and paymentDetails are properly set in the component state
+//       // Construct the payload including order data, total price, payment method, and payment details
+//       const payload = {
+//           totalPrice: priceCalculatorData.totalPrice,
+//           paymentMethod: paymentOption,
+//           paymentDetails: paymentOption === 'cardPayment' ? 'Card details' : 'Mobile banking details', // Adjust based on selected payment method
+//       };
+
+//       // Send the payload to the backend
+//       const response = await fetch('http://localhost:5000/orders', {
+//           method: 'POST',
+//           headers: {
+//               'Content-Type': 'application/json',
+//           },
+//           body: JSON.stringify(payload),
+//       });
+
+//       if (response.ok) {
+//           const responseData = await response.json();
+//           console.log('Order stored successfully:', responseData.result);
+//           // Optionally, you can perform further actions upon successful order submission
+//       } else {
+//           console.error('Failed to store order:', response.statusText);
+//           // Handle the error case accordingly
+//       }
+//   } catch (error) {
+//       console.error('Error storing order:', error);
+//       // Handle any network or other errors
+//   }
+// };
