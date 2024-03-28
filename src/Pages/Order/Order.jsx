@@ -4,14 +4,17 @@ import { getOrders } from '../../api/orders';
 import { OrderData } from './OrderData';
 import PriceCalculator from './PriceCalculator';
 import PaymentOptions from '../../components/PaymentOptions';
+import { useNavigate } from 'react-router-dom';
 
 export const Order = () => {
 
     const { user } = useContext(AuthContext);
 
+    const navigate = useNavigate();
+
     const [orders, setOrders] = useState([]);
     const [paymentOption, setPaymentOption] = useState('');
-    const [priceCalculatorData, setPriceCalculatorData] = useState({/* initial data */});
+    const [priceCalculatorData, setPriceCalculatorData] = useState({});
     const fetchOrders = () =>{
         getOrders(user?.email).then(data =>{ setOrders(data)})
     }
@@ -19,36 +22,54 @@ export const Order = () => {
         fetchOrders();
       },[user])
 
-const handleOrderConfirm = async () => {
-  try {
-    const orderData = {
-      paymentOption,
-      priceCalculatorData,
-      // Any other relevant data you need for the order
-    };
+      const handleOrderConfirm = async () => {
+        try {
+          const customerData = orders.map(({ customerName, image, number, address, code, quantity, product, price,date }) => ({ customerName, image, number, address, code, quantity, product, price,date }));
+          const email = user?.email; // Extract email from user object
+          const orderData = {
+            customerData,
+            paymentOption,
+            priceCalculatorData,
+            email: email, // Assign email to orderData
+          };
+    
+          const response = await fetch('http://localhost:5000/admin', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(orderData),
+          });
+    
+          if (response.ok) {
+            const responseData = await response.json();
+            console.log('Order stored successfully:', responseData.result);
+    
+            const deleteResponse = await fetch(`http://localhost:5000/orders/${email}`, {
+              method: 'DELETE',
+            });
+            navigate('/home')
+    
+            if (deleteResponse.ok) {
+              console.log('Order data deleted successfully');
+            } else {
+              console.error('Failed to delete order data:', deleteResponse.statusText);
+              // Handle the error case accordingly
+            }
+          } else {
+            console.error('Failed to store order:', response.statusText);
+            // Handle the error case accordingly
+          }
+        } catch (error) {
+          console.error('Error handling order:', error);
+          // Handle any unexpected errors
+        }
+      };
+      
+      
 
-    // Send a POST request to your backend endpoint
-    const response = await fetch('http://localhost:5000/orders', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(orderData),
-    });
+      
 
-    if (response.ok) {
-      const responseData = await response.json();
-      console.log('Order stored successfully:', responseData.result);
-      // Optionally, you can perform further actions upon successful order submission
-    } else {
-      console.error('Failed to store order:', response.statusText);
-      // Handle the error case accordingly
-    }
-  } catch (error) {
-    console.error('Error storing order:', error);
-    // Handle any unexpected errors
-  }
-};
     
     
     
@@ -179,3 +200,35 @@ orders.forEach(order => {
 //       // Handle any network or other errors
 //   }
 // };
+
+// const handleOrderConfirm = async () => {
+//   try {
+//     const orderData = {
+//       paymentOption,
+//       priceCalculatorData,
+//       // Any other relevant data you need for the order
+//     };
+
+//     // Send a POST request to your backend endpoint
+//     const response = await fetch('http://localhost:5000/admin', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify(orderData),
+//     });
+
+//     if (response.ok) {
+//       const responseData = await response.json();
+//       console.log('Order stored successfully:', responseData.result);
+//       // Optionally, you can perform further actions upon successful order submission
+//     } else {
+//       console.error('Failed to store order:', response.statusText);
+//       // Handle the error case accordingly
+//     }
+//   } catch (error) {
+//     console.error('Error storing order:', error);
+//     // Handle any unexpected errors
+//   }
+// };
+
