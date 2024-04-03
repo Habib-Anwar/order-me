@@ -3,7 +3,8 @@ import { AuthContext } from '../../providers/AuthProvider'
 import Modal from 'react-modal';
 // Modal.setAppElement('#root');
 
-export const AdminData = ({customerName, address, number,image,  code, quantity, product, price,date }) => {
+export const AdminData = ({customerName, address, number,image,  code, quantity, product, price,date,   paymentOption,
+  priceCalculatorData }) => {
     const {user} = useContext(AuthContext);
     
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -49,8 +50,8 @@ export const AdminData = ({customerName, address, number,image,  code, quantity,
         <h2>Details</h2>
         {/* <img src={item.image} alt="" srcset="" className='w-64' /> */}
         <p>{code}</p>
-        {/* <p>{paymentOption}</p>
-        <p>{totalPrice}</p> */}
+        <p>{paymentOption}</p>
+        <p>{priceCalculatorData}</p>
 
         <button onClick={closeModal}>Close Modal</button>
       </Modal>

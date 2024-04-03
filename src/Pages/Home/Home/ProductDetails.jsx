@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../../providers/AuthProvider';
+import Swal from 'sweetalert2';
+import 'sweetalert2/src/sweetalert2.scss';
 
 const ProductDetails = () => {
   const [productCode, setProductCode] = useState('');
@@ -9,6 +11,7 @@ const ProductDetails = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [orderProduct, setOrderProduct] = useState([]);
+  const [quantity, setQuantity] = useState(0); 
 
 
   const {user} = useContext(AuthContext);
@@ -33,9 +36,37 @@ const ProductDetails = () => {
       setProductDetails(null);
     }
   };
-  const openModalForAddProduct = (product) => {
-    setIsModalOpen(true);
-    setSelectedProduct(product);
+  // const openModalForAddProduct = (product) => {
+  //   setIsModalOpen(true);
+  //   setSelectedProduct(product);
+  // };
+
+  const showSuccessAlert = () => {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-danger"
+      },
+      buttonsStyling: false
+    });
+    
+    swalWithBootstrapButtons.fire({
+      title: "Your product is added",
+      text: "Want to add new product?",
+      iconHtml: '<img src="https://t4.ftcdn.net/jpg/01/36/70/67/360_F_136706734_KWhNBhLvY5XTlZVocpxFQK1FfKNOYbMj.jpg" class="swal2-icon" style="width: auto;height: 80px;">',
+      showCancelButton: true,
+      confirmButtonText: "Yes!",
+      cancelButtonText: "No, place order!",
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.reload();
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        // Redirect to "/order" route when cancel button is clicked
+        window.location.href = "/order";
+      }
+    });
+    
   };
 
   const openModal = () => {
@@ -90,6 +121,11 @@ const ProductDetails = () => {
     
   };
 
+  const handleQuantityChange = (event) => {
+    const newQuantity = parseInt(event.target.value); // Parse the input value to an integer
+    setQuantity(newQuantity); // Update the quantity state
+  };
+
   return (
     <>
     <form onSubmit={handleSubmit}>
@@ -122,6 +158,9 @@ const ProductDetails = () => {
           name='code'
         />
       </label>
+      {productDetails && parseInt(productDetails.stock) < parseInt(quantity) && (
+    <p className='text-sm text-red-500 font-semibold'>Sorry!! this dress is sold out</p>
+  )}
     </div>
     {productDetails && (
       <div className="mb-10">
@@ -137,7 +176,7 @@ const ProductDetails = () => {
 
     <div className="mb-10">
       <label>
-        <input type="number" name="quantity" placeholder="Product Quantity" className='input input-bordered w-full max-w-xs' />
+        <input type="number" name="quantity" placeholder="Product Quantity" className='input input-bordered w-full max-w-xs'  onChange={handleQuantityChange} />
       </label>
     </div>
 
@@ -154,7 +193,7 @@ const ProductDetails = () => {
      <div className="mb-10">
         <button
            type="submit"
-          onClick={() => openModalForAddProduct(selectedProduct)}
+          onClick={() => showSuccessAlert(selectedProduct)}
           className="w-full btn btn-info rounded-md bg-error px-5 py-3 text-base font-medium text-white transition hover:bg-opacity-90"
         >
           Add Product
