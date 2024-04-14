@@ -88,8 +88,8 @@ const customerAlert = () =>{
 }
 
   return (
-   <div className='lg:grid grid-cols-2 gap-12  mb-12'>
-  <div className="lg:order-2 lg:col-span-1">
+   <div className='lg:grid grid-cols-2 gap-12 mb-12 lg:max-w-screen-xl mx-auto'>
+  <div className="lg:order-2 lg:col-span-1 lg:w-1/2">
     <div className="card bg-slate-300 shadow-xl">
       <div className="card-body">
         <h2 className="card-title">Hi!</h2>
@@ -154,7 +154,7 @@ const customerAlert = () =>{
       )}
     </div>
 
-    <div className="card w-full sm:w-96 bg-base-100 shadow-xl mt-4 sm:mt-0">
+    <div className="card w-full sm:w-96 bg-base-100 shadow-xl mt-4 sm:mt-0 lg:ml-56">
       <div className="card-body">
         <PriceCalculator updateData={setPriceCalculatorData}></PriceCalculator>
         <div>

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 const PaymentOptions = ({ updateOption, updateDetails }) => {
     const [paymentMethod, setPaymentMethod] = useState('');
     const [paymentDetails, setPaymentDetails] = useState('');
+    const [selectedPaymentOption, setSelectedPaymentOption] = useState('');
 
     const handlePaymentChange = (event) => {
         const selectedMethod = event.target.value;
@@ -64,6 +65,10 @@ const PaymentOptions = ({ updateOption, updateDetails }) => {
             console.log('Processing mobile banking payment with details:', paymentDetails);
         }
     };
+    // Function to handle payment option change
+const handlePaymentOptionChange = (event) => {
+    setSelectedPaymentOption(event.target.value);
+  };
 
     return (
         <div className='flex gap-4'>
@@ -95,8 +100,8 @@ const PaymentOptions = ({ updateOption, updateDetails }) => {
                             id="cardPayment"
                             name="onlinePaymentOption"
                             value="cardPayment"
-                            checked={paymentMethod === 'cardPayment'}
-                            onChange={handlePaymentChange}
+                            checked={ selectedPaymentOption=== 'cardPayment'} // paymentMethod
+                            onChange={(e)=>{handlePaymentChange(e); handlePaymentOptionChange(e)}}
                         />
                         <label htmlFor="cardPayment">Card Payment</label>
                         <br />
@@ -105,8 +110,8 @@ const PaymentOptions = ({ updateOption, updateDetails }) => {
                             id="bKashNagadPayment"
                             name="onlinePaymentOption"
                             value="bKashNagadPayment"
-                            checked={paymentMethod === 'bKashNagadPayment'}
-                            onChange={handlePaymentChange}
+                            checked={selectedPaymentOption === 'bKashNagadPayment'} // paymentMethod
+                            onChange={(e)=>{handlePaymentChange(e);handlePaymentOptionChange(e)}}
                         />
                         <label htmlFor="bKashNagadPayment">bKash/Nagad Payment</label>
                         <br />

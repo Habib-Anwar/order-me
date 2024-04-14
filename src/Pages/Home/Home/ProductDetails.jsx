@@ -10,8 +10,15 @@ const ProductDetails = () => {
   const [productDetails, setProductDetails] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [formValue, setFormValue] = useState({
+    name: '',
+    number: '',
+    address: '',
+    quantity: ''
+  });
+  const [disable, setDisable] = useState('typing')
   const [orderProduct, setOrderProduct] = useState([]);
-  const [quantity, setQuantity] = useState(0); 
+  const [quantity, setQuantity] = useState(1); 
 
 
   const {user} = useContext(AuthContext);
@@ -21,6 +28,7 @@ const ProductDetails = () => {
      .then(res =>res.json())
      .then(data =>setOrderProduct(data))
   }, [])
+
 
   const handleInputChange = (e) => {
     const code = e.target.value;
@@ -41,7 +49,7 @@ const ProductDetails = () => {
   //   setSelectedProduct(product);
   // };
 
-  const showSuccessAlert = () => {
+  const showSuccessAlert = (product) => {
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
         confirmButton: "btn btn-success",
@@ -68,10 +76,12 @@ const ProductDetails = () => {
     });
     
   };
+  
 
   const openModal = () => {
     setIsModalOpen(true);
   };
+  
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -84,7 +94,9 @@ const ProductDetails = () => {
     const address = form.address.value;
     const code = form.code.value;
     const quantity = form.quantity.value;
+
     console.log(customerName, number, address, code, quantity)
+    setDisable('submitted');
 
     const apiUrl = 'http://localhost:5000/orders';
 
@@ -114,36 +126,59 @@ const ProductDetails = () => {
       .then((data) => {
         // Handle the response from the server as needed
         console.log('Order stored successfully:', data);
+        setProductDetails(prevProducts =>{
+          return prevProducts =>{
+            return prevProducts.map(product => {
+              if(product.id === selectedProduct.id){
+                return res.data.product;
+              }
+              return product;
+            })
+          }
+        })
       })
       .catch((error) => {
         console.error('Error storing order:', error);
     });
     
   };
+  
+
+  const handleInput = (e) => {
+    const {name, value} = e.target;
+    setFormValue({...formValue, [name]:value})
+  };
 
   const handleQuantityChange = (event) => {
     const newQuantity = parseInt(event.target.value); // Parse the input value to an integer
-    setQuantity(newQuantity); // Update the quantity state
+    if (!isNaN(newQuantity) && newQuantity >= 0) {
+      setQuantity(newQuantity);
+  }
   };
+
+
 
   return (
     <>
     <form onSubmit={handleSubmit}>
     <div className="mb-10">
       <label>
-        <input type="text" name="name" placeholder="Full Name" className='input input-bordered w-full max-w-xs'/>
+        <input type="text" name="name" placeholder="Full Name" className='input input-bordered w-full max-w-xs' value={formValue.name} required
+        onChange={handleInput}/>
       </label>
     </div>
 
     <div className="mb-10">
       <label>
-        <input type="number" name="number" placeholder="Mobile Number" className='input input-bordered w-full max-w-xs'/>
+        <input type="number" name="number" min="0" placeholder="Mobile Number" className='input input-bordered w-full max-w-xs' value={formValue.number} required
+        onChange={handleInput}/>
       </label>
     </div>
 
     <div className="mb-10">
       <label>
-        <input type="text" name="address" placeholder="Address" className='input input-bordered w-full max-w-xs'/>
+        <input type="text" name="address" placeholder="Address" className='input input-bordered w-full max-w-xs' value={formValue.address} required
+        onChange={handleInput}/>
       </label>
     </div>
 
@@ -152,11 +187,14 @@ const ProductDetails = () => {
         <input
           type="text"
           value={productCode}
-          onChange={handleInputChange}
+          onChange={(e) => {
+            handleInputChange(e);
+          }}
           placeholder="Enter Product Code"
           className='input input-bordered w-full max-w-xs'
           name='code'
-        />
+          required
+          />
       </label>
       {productDetails && parseInt(productDetails.stock) < parseInt(quantity) && (
     <p className='text-sm text-red-500 font-semibold'>Sorry!! this dress is sold out</p>
@@ -176,14 +214,18 @@ const ProductDetails = () => {
 
     <div className="mb-10">
       <label>
-        <input type="number" name="quantity" placeholder="Product Quantity" className='input input-bordered w-full max-w-xs'  onChange={handleQuantityChange} />
+        <input type="number" min="1" name="quantity" placeholder="Product Quantity" className='input input-bordered w-full max-w-xs'
+        value={formValue.quantity} required    onChange={(event) => {
+        handleQuantityChange(event);
+        handleInput(event);
+    }} />
       </label>
     </div>
 
     {productDetails && (
       <div className="mb-10">
         <button
-          onClick={openModal}
+          onClick={(e)=>{openModal(e);handleAddProductClick(e)}}
           className="w-full btn btn-info rounded-md border border-primary bg-info px-5 py-3 text-base font-medium text-white transition hover:bg-opacity-90"
         >
           View Product Details
@@ -195,12 +237,18 @@ const ProductDetails = () => {
            type="submit"
           onClick={() => showSuccessAlert(selectedProduct)}
           className="w-full btn btn-info rounded-md bg-error px-5 py-3 text-base font-medium text-white transition hover:bg-opacity-90"
+        disabled={formValue.name.length === 0 ||
+        formValue.address.length === 0 ||
+      formValue.number.length === 0 ||
+      formValue.quantity.length === 0 ||
+    
+  disable === 'submitted'}
         >
           Add Product
         </button>
       </div>
       </form>
-    <Link to="/order">
+    {/* <Link to="/order">
     <div className="mb-10">
       <input
        type="button"
@@ -208,13 +256,13 @@ const ProductDetails = () => {
         className="w-full cursor-pointer rounded-md border border-primary bg-primary px-5 py-3 text-base font-medium text-white transition hover:bg-opacity-90"
        />
     </div>
-    </Link>
+    </Link> */}
     <Modal
 isOpen={isModalOpen}
 onRequestClose={closeModal}
 contentLabel="Product Details Modal"
 >
-{productDetails && (
+{isModalOpen && productDetails && (
   <div className='flex justify-between gap-12'>
     <div>
       <img src={productDetails.image} alt="" />
@@ -236,3 +284,4 @@ contentLabel="Product Details Modal"
 };
 
 export default ProductDetails;
+

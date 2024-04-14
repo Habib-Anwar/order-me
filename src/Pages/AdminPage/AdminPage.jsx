@@ -26,14 +26,16 @@ export const AdminPage = () => {
 
   return (
     <>
-        <input
+    <div className='text-center'>
+    <input
         type="date"
         value={searchDate}
         onChange={(e) => setSearchDate(e.target.value)}
         placeholder="Search by date"
         className="input input-bordered"
       />
-      <button onClick={handleSearch}>Search</button>
+      <button className='btn btn-info ml-2 text-lime-700' onClick={handleSearch}>Search</button>
+    </div>
     <div className="overflow-x-auto">
       <table className="table">
         <thead>

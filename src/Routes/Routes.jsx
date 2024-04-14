@@ -6,6 +6,7 @@ import { Home } from "../Pages/Home/Home/Home";
 import { Order } from "../Pages/Order/Order";
 import { InitialPage } from "../Pages/Home/Home/InitialPage";
 import { AdminPage } from "../Pages/AdminPage/AdminPage";
+import { ViewProductDetails } from "../Pages/ViewProductDetails/ViewProductDetails";
 
 
 
@@ -15,6 +16,10 @@ import { AdminPage } from "../Pages/AdminPage/AdminPage";
       path: "/",
       element: <InitialPage></InitialPage>
 
+    },
+    {
+      path: "/viewDetails",
+      element: <ViewProductDetails></ViewProductDetails>
     },
 
     {

@@ -53,25 +53,42 @@ export const InitialPage = () => {
       };
 
   return (
-    <div>
-    <Link to="/">
-   <div className=' flex justify-center mt-32'>
-      <img src="https://i.ibb.co/KyDVTmD/logo.png" alt="" className=' w-52' />
-   </div>
-   </Link>
-   <div className='mt-28 text-center'>
-      <h2 className='text-2xl mb-6 font-bold'>Login With</h2>
-      <div onClick={handleFacebookSignIn} className="flex justify-center gap-12 w-96 ml-[570px] btn bg-pink-50 mb-6"
->
-          <img src={Flogo} alt="" className='w-8 bg-primary' />
-          <h3 className='text-lg'>Continue With Facebook</h3>
-      </div>
-      <button onClick={handleGoogleSignIn} className="flex justify-center gap-12 w-96 ml-[570px] btn bg-pink-50"
->
-          <img src={Glogo} alt="" className='w-8' />
-          <h3 className='text-lg'>Continue With Google</h3>
-      </button>
-   </div>
+//     <div>
+//     <Link to="/">
+//    <div className=' flex justify-center mt-32'>
+//       <img src="https://i.ibb.co/KyDVTmD/logo.png" alt="" className=' w-52' />
+//    </div>
+//    </Link>
+//    <div className='mt-28 text-center'>
+//       <h2 className='text-2xl mb-6 font-bold'>Login With</h2>
+//       <div onClick={handleFacebookSignIn} className="flex justify-center gap-12 w-96 ml-[570px] btn bg-pink-50 mb-6"
+// >
+//           <img src={Flogo} alt="" className='w-8 bg-primary' />
+//           <h3 className='text-lg'>Continue With Facebook</h3>
+//       </div>
+//       <button onClick={handleGoogleSignIn} className="flex justify-center gap-12 w-96 ml-[570px] btn bg-pink-50"
+// >
+//           <img src={Glogo} alt="" className='w-8' />
+//           <h3 className='text-lg'>Continue With Google</h3>
+//       </button>
+//    </div>
+//   </div>
+<div className='flex flex-col items-center mt-52'>
+  <Link to="/" className='mb-10'>
+    <img src="https://i.ibb.co/KyDVTmD/logo.png" alt="" className='w-52' />
+  </Link>
+  <div className='text-center'>
+    <h2 className='text-2xl mb-6 font-bold'>Login With</h2>
+    <div onClick={handleFacebookSignIn} className="flex justify-center items-center gap-4 w-full max-w-lg btn bg-pink-50 mb-6">
+      <img src={Flogo} alt="" className='w-8 bg-primary' />
+      <h3 className='text-lg'>Continue With Facebook</h3>
+    </div>
+    <button onClick={handleGoogleSignIn} className="flex justify-center items-center gap-4 w-full max-w-lg btn bg-pink-50">
+      <img src={Glogo} alt="" className='w-8' />
+      <h3 className='text-lg'>Continue With Google</h3>
+    </button>
   </div>
+</div>
+
   )
 }
